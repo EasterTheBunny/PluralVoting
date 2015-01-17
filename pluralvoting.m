@@ -64,17 +64,21 @@ for i = 1:columns(voters)
         liberal_p = liberal_p + 1;
       endif
     else
-      % temp = round(temp);
-      % give 50 percent chance that a moderate voter will cast a plural vote
-      if(rand(1) < plural_vote_chance)
+      if(temp >= 1*(0.5-moderate_for_third) && temp <= 1*(0.5+moderate_for_third))
+        % devout votes for third party
         moderate_p = moderate_p + 1;
-      endif
-      if(temp >= 0 && temp <= 1*(0.5-moderate_for_third))
-        conservative_p = conservative_p + 1;
-      elseif(temp <= 1 && temp >= 1*(0.5+moderate_for_third))
-        liberal_p = liberal_p + 1;
       else
+        % divide votes on midpoint
+        if(temp < 0.5)
+          conservative_p = conservative_p + 1;
+        else
+          liberal_p = liberal_p + 1;
+        endif
         
+        % chance that a moderate voter will cast a plural vote
+        if(rand(1) < plural_vote_chance)
+          moderate_p = moderate_p + 1;
+        endif
       endif
     endif
   endfor
